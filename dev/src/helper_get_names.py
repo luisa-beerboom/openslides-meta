@@ -162,10 +162,11 @@ class HelperGetNames:
     @staticmethod
     @max_length
     def get_not_null_rel_list_insert_trigger_name(
-        table_name: str, column_name: str,
+        table_name: str,
+        column_name: str,
     ) -> str:
         """gets the name of the insert trigger for not null on relation lists"""
-        name = f"tr_i_{table_name}_{column_name}"[:HelperGetNames.MAX_LEN]
+        name = f"tr_i_{table_name}_{column_name}"[: HelperGetNames.MAX_LEN]
         if name in HelperGetNames.trigger_unique_list:
             raise Exception(f"trigger {name} is not unique!")
         HelperGetNames.trigger_unique_list.append(name)
@@ -174,14 +175,16 @@ class HelperGetNames:
     @staticmethod
     @max_length
     def get_not_null_rel_list_upd_del_trigger_name(
-        table_name: str, column_name: str,
+        table_name: str,
+        column_name: str,
     ) -> str:
         """gets the name of the update/delete trigger for not null on relation lists"""
-        name = f"tr_ud_{table_name}_{column_name}"[:HelperGetNames.MAX_LEN]
+        name = f"tr_ud_{table_name}_{column_name}"[: HelperGetNames.MAX_LEN]
         if name in HelperGetNames.trigger_unique_list:
             raise Exception(f"trigger {name} is not unique!")
         HelperGetNames.trigger_unique_list.append(name)
         return name
+
 
 class InternalHelper:
     MODELS: dict[str, dict[str, Any]] = {}

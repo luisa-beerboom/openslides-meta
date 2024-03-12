@@ -391,8 +391,14 @@ class GenerateCodeBlocks:
                     foreign_table_ref_column,
                 )
                 if own_table_field.field_def.get("required"):
-                    text["create_trigger"] = cls.get_trigger_check_not_null_for_relation_lists(
-                        own_table_field.table, own_table_field.column, foreign_table_field.table, foreign_table_field.column)
+                    text["create_trigger"] = (
+                        cls.get_trigger_check_not_null_for_relation_lists(
+                            own_table_field.table,
+                            own_table_field.column,
+                            foreign_table_field.table,
+                            foreign_table_field.column,
+                        )
+                    )
                 final_info = "SQL " + final_info
         text["final_info"] = final_info
         return text
@@ -417,7 +423,9 @@ class GenerateCodeBlocks:
             return f"(select array_agg({foreign_letter}.{foreign_table_ref_column}) from {foreign_table_name} {foreign_letter}) as {fname},\n"
 
     @classmethod
-    def get_trigger_check_not_null_for_relation_lists(cls, own_table:str, own_column:str, foreign_table:str, foreign_column) -> str:
+    def get_trigger_check_not_null_for_relation_lists(
+        cls, own_table: str, own_column: str, foreign_table: str, foreign_column
+    ) -> str:
         foreign_table_t = HelperGetNames.get_table_name(foreign_table)
         return dedent(
             f"""
