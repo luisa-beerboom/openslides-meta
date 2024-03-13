@@ -2256,6 +2256,10 @@ structure_level_list_of_speakers:
     type: timestamp
     restriction_mode: A
     description: The current start time of a speaker for this structure_level. Is only set if a currently speaking speaker exists
+  remaining_time_difference:
+    type: number
+    restriction_mode: A
+    description: The amount by which the remaining_time was changed during the current speech. Is only set if a currently speaking speaker exists
   meeting_id:
     type: relation
     to: meeting/structure_level_list_of_speakers_ids
