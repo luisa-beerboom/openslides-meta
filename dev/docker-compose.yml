@@ -8,10 +8,10 @@ services:
         volumes:
             - ..:/app
         environment:
-            - POSTGRES_HOST=postgres
-            - POSTGRES_PORT=5432
-            - POSTGRES_USER=openslides
-            - POSTGRES_DB=openslides
+            - DATABASE_HOST=postgres
+            - DATABASE_PORT=5432
+            - DATABASE_USER=openslides
+            - DATABASE_NAME=openslides
             - PGPASSWORD=openslides
 
         depends_on:

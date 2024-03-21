@@ -36,10 +36,10 @@ generate-relational-schema:
 	python src/generate_sql_schema.py
 
 drop-database:
-	dropdb -f -e --if-exists -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -U ${POSTGRES_USER} ${POSTGRES_DB}
+	dropdb -f -e --if-exists -h ${DATABASE_HOST} -p ${DATABASE_PORT} -U ${DATABASE_USER} ${DATABASE_NAME}
 
 create-database:
-	createdb -e -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -U ${POSTGRES_USER} ${POSTGRES_DB}
+	createdb -e -h ${DATABASE_HOST} -p ${DATABASE_PORT} -U ${DATABASE_USER} ${DATABASE_NAME}
 
 apply-db-schema:
 	scripts/apply_db_schema.sh
@@ -47,7 +47,7 @@ apply-db-schema:
 create-database-with-schema: drop-database create-database apply-db-schema
 
 run-psql:
-	psql -h ${POSTGRES_HOST} -p ${POSTGRES_PORT} -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+	psql -h ${DATABASE_HOST} -p ${DATABASE_PORT} -U ${DATABASE_USER} -d ${DATABASE_NAME}
 
 # Docker manage commands
 

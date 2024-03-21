@@ -1,11 +1,13 @@
-from typing import Any
+from typing import Any, cast
 
 from psycopg import Cursor, sql
 
 
 class DbUtils:
     @classmethod
-    def insert_wrapper(cls, curs: Cursor, table_name: str, data: dict[str, Any]) -> int:
+    def insert_wrapper(
+        cls, curs: Cursor, table_name: str, data: dict[str, Any]
+    ) -> None | int:
         query = f"INSERT INTO {table_name} ({', '.join(data.keys())}) VALUES({{}}) RETURNING id;"
         query = (
             sql.SQL(query)
@@ -14,7 +16,10 @@ class DbUtils:
             )
             .as_string(curs)
         )
-        return curs.execute(query, tuple(data.values())).fetchone()["id"]
+        result = curs.execute(query, tuple(data.values())).fetchone()
+        if isinstance(result, dict):
+            return result.get("id", 0)
+        return None
 
     @classmethod
     def insert_many_wrapper(
@@ -28,10 +33,10 @@ class DbUtils:
         if not data_list:
             return ids
         # use all keys in same sequence
-        keys = set()
+        keys_set: set = set()
         for data in data_list:
-            keys.update(data.keys())
-        keys = sorted(keys)
+            keys_set.update(data.keys())
+        keys: list = sorted(keys_set)
         temp_data = {k: None for k in keys}
 
         dates = [temp_data | data for data in data_list]
@@ -51,7 +56,7 @@ class DbUtils:
         ids = []
         if returning:
             while True:
-                ids.append(curs.fetchone()[returning])
+                ids.append(cast(dict, curs.fetchone())[returning])
                 if not curs.nextset():
                     break
         return ids
@@ -69,6 +74,6 @@ class DbUtils:
             f"SELECT {', '.join(field_names) if field_names else '*'} FROM {table_name}{' where id = %s' if id_ else ''}"
         )
         if id_:
-            return curs.execute(query, (id_,)).fetchone()
+            return result if (result := curs.execute(query, (id_,)).fetchone()) else {}
         else:
             return curs.execute(query).fetchall()

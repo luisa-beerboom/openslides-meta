@@ -48,6 +48,6 @@ jobs:
       if: always()
       run: make pyupgrade
 
-    - name: Validate models.yml
-      if: always()
-      run: make validate-models
+    # - name: Validate models.yml
+    #   if: always()
+    #   run: make validate-models

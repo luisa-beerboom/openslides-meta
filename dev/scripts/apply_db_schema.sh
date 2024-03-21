@@ -1,3 +1,4 @@
 #!/bin/bash
 
-psql -1 -h "$POSTGRES_HOST" -p "$POSTGRES_PORT" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -f sql/schema_relational.sql
+cd "$(dirname "$0")"
+psql -1 -h "$DATABASE_HOST" -p "$DATABASE_PORT" -U "$DATABASE_USER" -d "$DATABASE_NAME" -f ../sql/schema_relational.sql

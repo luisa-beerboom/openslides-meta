@@ -33,7 +33,7 @@ class BaseTestCase(TestCase):
     def set_db_connection(cls, db_name:str, autocommit:bool = False, row_factory:callable = psycopg.rows.dict_row) -> None:
         env = os.environ
         try:
-            cls.db_connection = psycopg.connect(f"dbname='{db_name}' user='{env['POSTGRES_USER']}' host='{env['POSTGRES_HOST']}' password='{env['PGPASSWORD']}'", autocommit=autocommit, row_factory=row_factory)
+            cls.db_connection = psycopg.connect(f"dbname='{db_name}' user='{env['DATABASE_USER']}' host='{env['DATABASE_HOST']}' password='{env['PGPASSWORD']}'", autocommit=autocommit, row_factory=row_factory)
         except Exception as e:
             raise Exception(f"Cannot connect to postgres: {e.message}")
 
@@ -51,7 +51,7 @@ class BaseTestCase(TestCase):
                 curs.execute(
                     sql.SQL("CREATE DATABASE {db_to_create} TEMPLATE {template_db};").format(
                         db_to_create=sql.Identifier(cls.temporary_template_db),
-                        template_db=sql.Identifier(env['POSTGRES_DB'])))
+                        template_db=sql.Identifier(env['DATABASE_NAME'])))
         cls.set_db_connection(cls.temporary_template_db)
         with cls.db_connection:
             cls.populate_database()
