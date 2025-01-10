@@ -491,6 +491,11 @@ meeting_user:
     equal_fields: meeting_id
     restriction_mode: A
     to: structure_level/meeting_user_ids
+  office_ids:
+    type: relation-list
+    equal_fields: meeting_id
+    restriction_mode: A
+    to: office/meeting_user_ids
 
 gender:
   id: *id_field
@@ -1535,6 +1540,11 @@ meeting:
     to: speaker/meeting_id
     on_delete: CASCADE
     restriction_mode: B
+  office_ids:
+    type: relation-list
+    to: office/meeting_id
+    on_delete: CASCADE
+    restriction_mode: B
   topic_ids:
     type: relation-list
     to: topic/meeting_id
@@ -1879,6 +1889,28 @@ structure_level:
     type: relation
     required: true
     to: meeting/structure_level_ids
+    restriction_mode: A
+
+office:
+  id: *id_field
+  name:
+    type: string
+    required: true
+    restriction_mode: A
+  meeting_user_ids:
+    type: relation-list
+    equal_fields: meeting_id
+    restriction_mode: A
+    to: meeting_user/office_ids
+  speaker_ids:
+    type: relation-list
+    equal_fields: meeting_id
+    restriction_mode: A
+    to: speaker/office_id
+  meeting_id:
+    type: relation
+    required: true
+    to: meeting/office_ids
     restriction_mode: A
 
 group:
@@ -2345,6 +2377,11 @@ speaker:
     to: point_of_order_category/speaker_ids
     equal_fields: meeting_id
     restriction_mode: A
+  office_id:
+    type: relation
+    equal_fields: meeting_id
+    restriction_mode: A
+    to: office/speaker_ids
   meeting_id:
     type: relation
     to: meeting/speaker_ids
