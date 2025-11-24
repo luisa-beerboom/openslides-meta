@@ -121,6 +121,9 @@ organization:
     type: relation-list
     to: gender/organization_id
     restriction_mode: A
+  disable_forward_with_attachments:
+    type: boolean
+    restriction_mode: A
 
   # Configuration (only for the server owner)
   enable_electronic_voting:
@@ -462,19 +465,16 @@ meeting_user:
     type: relation-list
     to: motion_editor/meeting_user_id
     equal_fields: meeting_id
-    on_delete: CASCADE
     restriction_mode: A
   motion_working_group_speaker_ids:
     type: relation-list
     to: motion_working_group_speaker/meeting_user_id
     equal_fields: meeting_id
-    on_delete: CASCADE
     restriction_mode: A
   motion_submitter_ids:
     type: relation-list
     to: motion_submitter/meeting_user_id
     equal_fields: meeting_id
-    on_delete: CASCADE
     restriction_mode: A
   assignment_candidate_ids:
     type: relation-list
@@ -2767,7 +2767,6 @@ motion_submitter:
     type: relation
     to: meeting_user/motion_submitter_ids
     restriction_mode: A
-    required: true
   motion_id:
     type: relation
     to: motion/submitter_ids
@@ -2791,7 +2790,6 @@ motion_editor:
     type: relation
     to: meeting_user/motion_editor_ids
     restriction_mode: A
-    required: true
   motion_id:
     type: relation
     to: motion/editor_ids
@@ -2815,7 +2813,6 @@ motion_working_group_speaker:
     type: relation
     to: meeting_user/motion_working_group_speaker_ids
     restriction_mode: A
-    required: true
   motion_id:
     type: relation
     to: motion/working_group_speaker_ids
