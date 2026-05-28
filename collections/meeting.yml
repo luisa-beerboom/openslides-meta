@@ -454,7 +454,7 @@ fields:
     - weight
     default: number
     restriction_mode: B
-  motions_number_type:
+  motions_assignments_number_type:
     type: string
     enum:
     - per_category
@@ -869,6 +869,11 @@ fields:
     to: motion_category/meeting_id
     on_delete: CASCADE
     restriction_mode: B
+  assignment_category_ids:
+    type: relation-list
+    to: assignment_category/meeting_id
+    on_delete: CASCADE
+    restriction_mode: B
   motion_block_ids:
     type: relation-list
     to: motion_block/meeting_id
@@ -935,11 +940,6 @@ fields:
   assignment_ids:
     type: relation-list
     to: assignment/meeting_id
-    on_delete: CASCADE
-    restriction_mode: B
-  assignment_candidate_ids:
-    type: relation-list
-    to: assignment_candidate/meeting_id
     on_delete: CASCADE
     restriction_mode: B
   personal_note_ids:

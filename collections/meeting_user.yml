@@ -71,11 +71,6 @@ fields:
     to: motion_submitter/meeting_user_id
     equal_fields: meeting_id
     restriction_mode: A
-  assignment_candidate_ids:
-    type: relation-list
-    to: assignment_candidate/meeting_user_id
-    equal_fields: meeting_id
-    restriction_mode: A
   vote_delegated_to_id:
     type: relation
     reference: meeting_user
