@@ -294,9 +294,9 @@ class Checker:
                     field["enum"] = shared_enum
             for attr in ("minLength", "maxLength"):
                 valid_attributes.append(attr)
-                if not isinstance(field.get("maxLength", 0), int):
+                if not isinstance(field.get(attr, 0), int):
                     self.errors.append(
-                        f"'maxLength' for {collectionfield} is not a number."
+                        f"'{attr}' for {collectionfield} is not a number."
                     )
             if (
                 "default" in field
