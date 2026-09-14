@@ -1,0 +1,61 @@
+fields:
+  id:
+    type: number
+    restriction_mode: A
+    constant: true
+    required: true
+  sort_result_by_votes:
+    type: boolean
+    default: true
+    restriction_mode: A
+  # Defaults for poll create form
+  visibility:
+    type: string
+    enum: poll_visibility
+    restriction_mode: A
+  allow_abstain:
+    type: boolean
+    default: true
+    restriction_mode: A
+  allow_nota:
+    type: boolean
+    default: false
+    restriction_mode: A
+  strike_out:
+    type: boolean
+    default: false
+    restriction_mode: A
+  onehundred_percent_base:
+    type: string
+    default: valid
+    restriction_mode: A
+  group_ids:
+    type: relation-list
+    to: group/used_in_meeting_poll_default_ids
+    equal_fields: meeting_id
+    restriction_mode: A
+  display_chart:
+    type: string
+    restriction_mode: A
+  used_as_assignment_poll_config_in_meeting_id:
+    type: relation
+    to: meeting/assignment_poll_config_id
+    restriction_mode: A
+    constant: true
+  used_as_motion_poll_config_in_meeting_id:
+    type: relation
+    to: meeting/motion_poll_config_id
+    restriction_mode: A
+    constant: true
+  used_as_topic_poll_config_in_meeting_id:
+    type: relation
+    to: meeting/topic_poll_config_id
+    restriction_mode: A
+    constant: true
+  meeting_id:
+    type: relation
+    required: true
+    reference: meeting
+    to: meeting/poll_default_ids
+    constant: true
+    restriction_mode: A

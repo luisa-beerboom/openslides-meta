@@ -18,12 +18,15 @@ fields:
     items:
       enum:
         - agenda_item.can_manage
+        - agenda_item.can_manage_polls
+        - agenda_item.can_see_polls
         - agenda_item.can_see
         - agenda_item.can_see_internal
         - assignment.can_manage
         - assignment.can_manage_polls
         - assignment.can_nominate_other
         - assignment.can_nominate_self
+        - assignment.can_see_polls
         - assignment.can_see
         - chat.can_manage
         - list_of_speakers.can_be_speaker
@@ -45,11 +48,11 @@ fields:
         - motion.can_manage
         - motion.can_manage_metadata
         - motion.can_manage_polls
+        - motion.can_see_polls
         - motion.can_see
         - motion.can_see_internal
         - motion.can_see_origin
         - motion.can_support
-        - poll.can_manage
         - poll.can_see_progress
         - projector.can_manage
         - projector.can_see
@@ -120,25 +123,9 @@ fields:
     to: poll/entitled_group_ids
     equal_fields: meeting_id
     restriction_mode: A
-  used_as_motion_poll_default_id:
-    type: relation
-    reference: meeting
-    to: meeting/motion_poll_default_group_ids
-    restriction_mode: A
-  used_as_assignment_poll_default_id:
-    type: relation
-    reference: meeting
-    to: meeting/assignment_poll_default_group_ids
-    restriction_mode: A
-  used_as_topic_poll_default_id:
-    type: relation
-    reference: meeting
-    to: meeting/topic_poll_default_group_ids
-    restriction_mode: A
-  used_as_poll_default_id:
-    type: relation
-    reference: meeting
-    to: meeting/poll_default_group_ids
+  used_in_meeting_poll_default_ids:
+    type: relation-list
+    to: meeting_poll_default/group_ids
     restriction_mode: A
   meeting_id:
     type: relation

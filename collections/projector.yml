@@ -183,10 +183,10 @@ fields:
     reference: meeting
     to: meeting/default_projector_motion_poll_ids
     restriction_mode: A
-  used_as_default_projector_for_poll_in_meeting_id:
+  used_as_default_projector_for_topic_poll_in_meeting_id:
     type: relation
     reference: meeting
-    to: meeting/default_projector_poll_ids
+    to: meeting/default_projector_topic_poll_ids
     restriction_mode: A
   meeting_id:
     type: relation

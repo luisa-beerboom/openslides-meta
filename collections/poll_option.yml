@@ -1,0 +1,30 @@
+fields:
+  id:
+    type: number
+    restriction_mode: A
+    constant: true
+    required: true
+  poll_id:
+    type: relation
+    to: poll/option_ids
+    reference: poll
+    required: true
+    restriction_mode: A
+  weight:
+    type: number
+    restriction_mode: A
+  text:
+    type: string
+    restriction_mode: A
+  content_object_id:
+    type: generic-relation
+    reference:
+      - meeting_user
+      - user
+    to:
+      collections:
+        - meeting_user
+        - user
+      field: poll_option_ids
+    required: false
+    restriction_mode: A

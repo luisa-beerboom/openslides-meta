@@ -1,0 +1,31 @@
+unique_together:
+  - poll_id, represented_meeting_user_id
+fields:
+  id:
+    type: number
+    restriction_mode: A
+    constant: true
+    required: true
+  poll_id:
+    type: relation
+    reference: poll
+    to: poll/ballot_user_ids
+    required: true
+    restriction_mode: A
+    constant: true
+  poll_ballot_id:
+    type: relation
+    to: poll_ballot/poll_ballot_user_id
+    restriction_mode: A
+  acting_meeting_user_id:
+    type: relation
+    reference: meeting_user
+    to: meeting_user/acting_ballot_ids
+    required: false
+    restriction_mode: A
+  represented_meeting_user_id:
+    type: relation
+    reference: meeting_user
+    to: meeting_user/represented_ballot_ids
+    required: false
+    restriction_mode: A

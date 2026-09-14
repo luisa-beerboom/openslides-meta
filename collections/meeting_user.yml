@@ -17,7 +17,7 @@ fields:
     restriction_mode: A
   vote_weight:
     type: decimal(6)
-    minimum: "0.000001"
+    minimum: '0.000001'
     restriction_mode: A
   locked_out:
     type: boolean
@@ -72,16 +72,34 @@ fields:
     to: assignment_candidate/meeting_user_id
     equal_fields: meeting_id
     restriction_mode: A
-  vote_delegated_to_id:
-    type: relation
-    reference: meeting_user
+  vote_delegated_to_ids:
+    type: relation-list
     to: meeting_user/vote_delegations_from_ids
     equal_fields: meeting_id
     restriction_mode: A
   vote_delegations_from_ids:
     type: relation-list
-    to: meeting_user/vote_delegated_to_id
+    to: meeting_user/vote_delegated_to_ids
     equal_fields: meeting_id
+    restriction_mode: A
+  poll_option_ids:
+    type: relation-list
+    to: poll_option/content_object_id
+    on_delete: PROTECT
+    restriction_mode: A
+  acting_ballot_ids:
+    type: relation-list
+    to: poll_ballot_user/acting_meeting_user_id
+    on_delete: SET_NULL
+    restriction_mode: A
+  represented_ballot_ids:
+    type: relation-list
+    to: poll_ballot_user/represented_meeting_user_id
+    on_delete: SET_NULL
+    restriction_mode: A
+  poll_entitled_user_ids:
+    type: relation-list
+    to: poll_entitled_user/meeting_user_id
     restriction_mode: A
   chat_message_ids:
     type: relation-list

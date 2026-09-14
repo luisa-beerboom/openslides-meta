@@ -1,0 +1,18 @@
+fields:
+  id:
+    type: number
+    restriction_mode: A
+    constant: true
+    required: true
+  poll_id:
+    type: relation
+    to: poll/entitled_user_ids
+    reference: poll
+    required: true
+    restriction_mode: A
+  meeting_user_id:
+    type: relation
+    to: meeting_user/poll_entitled_user_ids
+    reference: meeting_user
+    required: false
+    restriction_mode: A

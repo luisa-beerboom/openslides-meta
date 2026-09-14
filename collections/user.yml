@@ -145,35 +145,15 @@ fields:
     to: meeting_user/user_id
     restriction_mode: A
     on_delete: CASCADE
-  poll_voted_ids:
-    type: relation-list
-    to: poll/voted_ids
-    restriction_mode: A
-  option_ids:
-    type: relation-list
-    to: option/content_object_id
-    reference: option
-    restriction_mode: A
-  vote_ids:
-    type: relation-list
-    to: vote/user_id
-    reference: vote
-    restriction_mode: A
-  delegated_vote_ids:
-    type: relation-list
-    to: vote/delegated_user_id
-    reference: vote
-    restriction_mode: A
-  poll_candidate_ids:
-    type: relation-list
-    to: poll_candidate/user_id
-    reference: poll_candidate
-    restriction_mode: A
   home_committee_id:
     type: relation
     to: committee/native_user_ids
     restriction_mode: E
     reference: committee
+  poll_option_ids:
+    type: relation-list
+    to: poll_option/content_object_id
+    restriction_mode: A
   history_position_ids:
     type: relation-list
     to: history_position/user_id

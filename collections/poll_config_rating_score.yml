@@ -1,0 +1,41 @@
+fields:
+  id:
+    type: number
+    restriction_mode: A
+    constant: true
+    required: true
+  poll_id:
+    type: relation
+    to: poll/config_id
+    required: true
+    restriction_mode: A
+  max_options_amount:
+    type: number
+    default: 0
+    restriction_mode: A
+  min_options_amount:
+    type: number
+    default: 0
+    restriction_mode: A
+  max_votes_per_option:
+    type: number
+    default: 0
+    restriction_mode: A
+  max_vote_sum:
+    type: number
+    default: 0
+    restriction_mode: A
+  min_vote_sum:
+    type: number
+    default: 0
+    restriction_mode: A
+  onehundred_percent_base:
+    type: string
+    required: true
+    enum: rating_score_onehundred_percent_bases
+    restriction_mode: A
+  required_majority:
+    type: string
+    enum: required_majority
+    default: no_majority
+    restriction_mode: A

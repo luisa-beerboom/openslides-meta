@@ -1,0 +1,16 @@
+fields:
+  id:
+    type: number
+    restriction_mode: A
+    constant: true
+    required: true
+  poll_id:
+    type: relation
+    to: poll/config_id
+    required: true
+    restriction_mode: A
+  posts:
+    type: number
+    minimum: 1
+    default: 1
+    restriction_mode: A

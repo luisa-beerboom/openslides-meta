@@ -15,15 +15,17 @@ fields:
     type: generic-relation
     to:
       collections:
-        - user
-        - motion
         - assignment
+        - motion
+        - topic
+        - user
       field: history_entry_ids
     restriction_mode: A
     reference:
-      - user
-      - motion
       - assignment
+      - motion
+      - topic
+      - user
   position_id:
     type: relation
     to: history_position/entry_ids

@@ -17,10 +17,6 @@ fields:
   type:
     type: string
     restriction_mode: A
-  content:
-    type: JSON
-    calculated: true
-    restriction_mode: A
   current_projector_id:
     type: relation
     reference: projector

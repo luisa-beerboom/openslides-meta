@@ -214,13 +214,6 @@ fields:
     on_delete: CASCADE
     equal_fields: meeting_id
     restriction_mode: C
-  option_ids:
-    type: relation-list
-    to: option/content_object_id
-    reference: option
-    on_delete: CASCADE
-    equal_fields: meeting_id
-    restriction_mode: C
   change_recommendation_ids:
     type: relation-list
     to: motion_change_recommendation/motion_id
