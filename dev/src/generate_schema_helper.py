@@ -1469,6 +1469,7 @@ DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION notify_transaction_e
         generic_plain_field_name: str,
         own_column: str,
         foreign_field: TableFieldType,
+        is_add:bool=False
     ) -> str:
         foreign_table = foreign_field.table
         foreign_card, error = InternalHelper.get_cardinality(foreign_field)
@@ -1484,17 +1485,18 @@ DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION notify_transaction_e
         generated_always_as = Helper.get_inline_generated_always_as_constraint(
             table_name, generic_plain_field_name, own_column, foreign_table
         )
+        add_text = "ADD COLUMN " if is_add else ""
 
-        return f"    {generic_plain_field_name} integer{unique}{generated_always_as},\n"
+        return f"    {add_text}{generic_plain_field_name} integer{unique}{generated_always_as},\n"
 
     @staticmethod
     def get_generic_field_constraint(
-        collection: str, own_column: str, foreign_tables: list[str]
+        collection: str, own_column: str, foreign_tables: list[str], is_add:bool=False
     ) -> str:
         constraint_name = HelperGetNames.get_generic_valid_constraint_name(
             collection, own_column
         )
-        return f"""    CONSTRAINT {constraint_name} CHECK (split_part({own_column}, '/', 1) IN ('{"','".join(foreign_tables)}')),\n"""
+        return f"""    ADD CONSTRAINT {constraint_name} CHECK (split_part({own_column}, '/', 1) IN ('{"','".join(foreign_tables)}')),\n"""
 
     @staticmethod
     def prefix_error(method_or_str: str, table_name: str, fname: str) -> str:

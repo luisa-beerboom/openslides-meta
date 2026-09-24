@@ -1071,7 +1071,7 @@ class GenerateCodeBlocks:
 
     @classmethod
     def get_generic_relation_type(
-        cls, table_name: str, fname: str, fdata: dict[str, Any], type_: str
+        cls, table_name: str, fname: str, fdata: dict[str, Any], type_: str, is_add:bool=False
     ) -> tuple[SchemaZoneTexts, str]:
         text = cast(SchemaZoneTexts, defaultdict(str))
         own_table_field = TableFieldType(table_name, fname, fdata)
@@ -1109,6 +1109,7 @@ class GenerateCodeBlocks:
                     generic_plain_field_name,
                     own_table_field.column,
                     foreign_table_field,
+                    is_add
                 )
                 if equal_fields := cls.get_equal_fields(
                     own_table_field, foreign_table_field
@@ -1140,7 +1141,7 @@ class GenerateCodeBlocks:
             if equal_fields_text:
                 text["create_trigger_equal_fields_code"] = equal_fields_text
             text["table"] += Helper.get_generic_field_constraint(
-                own_table_field.table, own_table_field.column, foreign_tables
+                own_table_field.table, own_table_field.column, foreign_tables, is_add
             )
         text["final_info"] = final_info
         return text, error
