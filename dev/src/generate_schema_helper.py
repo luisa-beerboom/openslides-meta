@@ -898,10 +898,6 @@ class Helper:
         foreign_table: str,
         ref_column: str,
         updated_field: str,
-        fk_columns: list[str] | str,
-        initially_deferred: bool = False,
-        delete_action: str = "",
-        update_action: str = "",
     ) -> str:
         trigger_name = HelperGetNames.get_notify_related_trigger_name(
             table_name, ref_column
@@ -1221,7 +1217,7 @@ DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION notify_transaction_e
 """
 
     @staticmethod
-    def get_trigger_for_generic_relation(
+    def get_log_trigger_for_generic_relation(
         table_name: str,
         generic_plain_field_name: str,
         updated_field: str,

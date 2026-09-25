@@ -832,6 +832,22 @@ class InternalHelper:
         return state, primary, text, error
 
     @staticmethod
+    def get_foreign_definitions_from_field_def(
+        field_def: dict[str, Any],
+    ) -> list[TableFieldType]:
+        """This is the general purpose method that takes generic relations and others into account."""
+        if field_def["type"].startswith("generic"):
+            return InternalHelper.get_definitions_from_foreign_list(
+                field_def.get("to"), field_def.get("reference")
+            )
+        else:
+            return [
+                TableFieldType.get_definitions_from_foreign(
+                    field_def.get("to"), field_def.get("reference")
+                )
+            ]
+
+    @staticmethod
     def get_definitions_from_foreign_list(
         to: ToDict | list[str] | None,
         reference: list[str] | None,
