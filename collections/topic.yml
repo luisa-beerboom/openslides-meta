@@ -59,7 +59,3 @@ fields:
     required: true
     restriction_mode: A
     constant: true
-  history_entry_ids:
-    type: relation-list
-    to: history_entry/model_id
-    restriction_mode: A
