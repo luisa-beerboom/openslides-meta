@@ -924,7 +924,7 @@ CREATE TABLE agenda_item_t (
     content_object_id_topic_id integer
         CONSTRAINT unique_agenda_item_content_object_id_topic_id UNIQUE
         CONSTRAINT generated_always_as_agenda_item_content_object_id_topic_id GENERATED ALWAYS AS (CASE WHEN split_part(content_object_id, '/', 1) = 'topic' THEN cast(split_part(content_object_id, '/', 2) AS INTEGER) ELSE null END) STORED,
-    ADD CONSTRAINT valid_agenda_item_content_object_id_part1 CHECK (split_part(content_object_id, '/', 1) IN ('motion','motion_block','assignment','topic')),
+    valid_agenda_item_content_object_id_part1 CHECK (split_part(content_object_id, '/', 1) IN ('motion','motion_block','assignment','topic')),
     parent_id integer,
     meeting_id integer
         CONSTRAINT required_agenda_item_meeting_id NOT NULL
@@ -1067,7 +1067,7 @@ CREATE TABLE history_entry_t (
         CONSTRAINT generated_always_as_history_entry_model_id_motion_id GENERATED ALWAYS AS (CASE WHEN split_part(model_id, '/', 1) = 'motion' THEN cast(split_part(model_id, '/', 2) AS INTEGER) ELSE null END) STORED,
     model_id_assignment_id integer
         CONSTRAINT generated_always_as_history_entry_model_id_assignment_id GENERATED ALWAYS AS (CASE WHEN split_part(model_id, '/', 1) = 'assignment' THEN cast(split_part(model_id, '/', 2) AS INTEGER) ELSE null END) STORED,
-    ADD CONSTRAINT valid_history_entry_model_id_part1 CHECK (split_part(model_id, '/', 1) IN ('user','motion','assignment')),
+    valid_history_entry_model_id_part1 CHECK (split_part(model_id, '/', 1) IN ('user','motion','assignment')),
     position_id integer
         CONSTRAINT required_history_entry_position_id NOT NULL,
     meeting_id integer
@@ -1125,7 +1125,7 @@ CREATE TABLE list_of_speakers_t (
     content_object_id_meeting_mediafile_id integer
         CONSTRAINT unique_list_of_speakers_content_object_id_meeting_mediafile_id UNIQUE
         CONSTRAINT generated_always_as_list_of_speakers_content_object_id_m07d8b8d GENERATED ALWAYS AS (CASE WHEN split_part(content_object_id, '/', 1) = 'meeting_mediafile' THEN cast(split_part(content_object_id, '/', 2) AS INTEGER) ELSE null END) STORED,
-    ADD CONSTRAINT valid_list_of_speakers_content_object_id_part1 CHECK (split_part(content_object_id, '/', 1) IN ('motion','motion_block','assignment','topic','meeting_mediafile')),
+    valid_list_of_speakers_content_object_id_part1 CHECK (split_part(content_object_id, '/', 1) IN ('motion','motion_block','assignment','topic','meeting_mediafile')),
     meeting_id integer
         CONSTRAINT required_list_of_speakers_meeting_id NOT NULL
 );
@@ -1155,7 +1155,7 @@ CREATE TABLE mediafile_t (
         CONSTRAINT generated_always_as_mediafile_owner_id_meeting_id GENERATED ALWAYS AS (CASE WHEN split_part(owner_id, '/', 1) = 'meeting' THEN cast(split_part(owner_id, '/', 2) AS INTEGER) ELSE null END) STORED,
     owner_id_organization_id integer
         CONSTRAINT generated_always_as_mediafile_owner_id_organization_id GENERATED ALWAYS AS (CASE WHEN split_part(owner_id, '/', 1) = 'organization' THEN cast(split_part(owner_id, '/', 2) AS INTEGER) ELSE null END) STORED,
-    ADD CONSTRAINT valid_mediafile_owner_id_part1 CHECK (split_part(owner_id, '/', 1) IN ('meeting','organization')),
+    valid_mediafile_owner_id_part1 CHECK (split_part(owner_id, '/', 1) IN ('meeting','organization')),
     CONSTRAINT unique_mediafile_title_parent_id_owner_id UNIQUE NULLS NOT DISTINCT (title, parent_id, owner_id)
 );
 
@@ -1857,7 +1857,7 @@ CREATE TABLE option_t (
     content_object_id_poll_candidate_list_id integer
         CONSTRAINT unique_option_content_object_id_poll_candidate_list_id UNIQUE
         CONSTRAINT generated_always_as_option_content_object_id_poll_candidd7449d9 GENERATED ALWAYS AS (CASE WHEN split_part(content_object_id, '/', 1) = 'poll_candidate_list' THEN cast(split_part(content_object_id, '/', 2) AS INTEGER) ELSE null END) STORED,
-    ADD CONSTRAINT valid_option_content_object_id_part1 CHECK (split_part(content_object_id, '/', 1) IN ('motion','user','poll_candidate_list')),
+    valid_option_content_object_id_part1 CHECK (split_part(content_object_id, '/', 1) IN ('motion','user','poll_candidate_list')),
     meeting_id integer
         CONSTRAINT required_option_meeting_id NOT NULL,
     CONSTRAINT unique_option_content_object_id_poll_id UNIQUE (content_object_id, poll_id)
@@ -1952,7 +1952,7 @@ CREATE TABLE personal_note_t (
         CONSTRAINT required_personal_note_content_object_id NOT NULL,
     content_object_id_motion_id integer
         CONSTRAINT generated_always_as_personal_note_content_object_id_motion_id GENERATED ALWAYS AS (CASE WHEN split_part(content_object_id, '/', 1) = 'motion' THEN cast(split_part(content_object_id, '/', 2) AS INTEGER) ELSE null END) STORED,
-    ADD CONSTRAINT valid_personal_note_content_object_id_part1 CHECK (split_part(content_object_id, '/', 1) IN ('motion')),
+    valid_personal_note_content_object_id_part1 CHECK (split_part(content_object_id, '/', 1) IN ('motion')),
     meeting_id integer
         CONSTRAINT required_personal_note_meeting_id NOT NULL,
     CONSTRAINT unique_personal_note_meeting_user_id_content_object_id UNIQUE (meeting_user_id, content_object_id)
@@ -2024,7 +2024,7 @@ CREATE TABLE poll_t (
         CONSTRAINT generated_always_as_poll_content_object_id_assignment_id GENERATED ALWAYS AS (CASE WHEN split_part(content_object_id, '/', 1) = 'assignment' THEN cast(split_part(content_object_id, '/', 2) AS INTEGER) ELSE null END) STORED,
     content_object_id_topic_id integer
         CONSTRAINT generated_always_as_poll_content_object_id_topic_id GENERATED ALWAYS AS (CASE WHEN split_part(content_object_id, '/', 1) = 'topic' THEN cast(split_part(content_object_id, '/', 2) AS INTEGER) ELSE null END) STORED,
-    ADD CONSTRAINT valid_poll_content_object_id_part1 CHECK (split_part(content_object_id, '/', 1) IN ('motion','assignment','topic')),
+    valid_poll_content_object_id_part1 CHECK (split_part(content_object_id, '/', 1) IN ('motion','assignment','topic')),
     global_option_id integer
         CONSTRAINT unique_poll_global_option_id UNIQUE,
     meeting_id integer
@@ -2100,7 +2100,7 @@ CREATE TABLE projection_t (
         CONSTRAINT generated_always_as_projection_content_object_id_project05617d4 GENERATED ALWAYS AS (CASE WHEN split_part(content_object_id, '/', 1) = 'projector_message' THEN cast(split_part(content_object_id, '/', 2) AS INTEGER) ELSE null END) STORED,
     content_object_id_projector_countdown_id integer
         CONSTRAINT generated_always_as_projection_content_object_id_project708e3f9 GENERATED ALWAYS AS (CASE WHEN split_part(content_object_id, '/', 1) = 'projector_countdown' THEN cast(split_part(content_object_id, '/', 2) AS INTEGER) ELSE null END) STORED,
-    ADD CONSTRAINT valid_projection_content_object_id_part1 CHECK (split_part(content_object_id, '/', 1) IN ('meeting','motion','meeting_mediafile','list_of_speakers','motion_block','assignment','agenda_item','topic','poll','projector_message','projector_countdown')),
+    valid_projection_content_object_id_part1 CHECK (split_part(content_object_id, '/', 1) IN ('meeting','motion','meeting_mediafile','list_of_speakers','motion_block','assignment','agenda_item','topic','poll','projector_message','projector_countdown')),
     meeting_id integer
         CONSTRAINT required_projection_meeting_id NOT NULL
 );
