@@ -1498,8 +1498,8 @@ DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION notify_transaction_e
         constraint_name = HelperGetNames.get_generic_valid_constraint_name(
             collection, own_column
         )
-        add_text = "ADD CONSTRAINT " if is_add else ""
-        return f"""    {add_text}{constraint_name} CHECK (split_part({own_column}, '/', 1) IN ('{"','".join(foreign_tables)}')),\n"""
+        add_text = "ADD " if is_add else ""
+        return f"""    {add_text}CONSTRAINT {constraint_name} CHECK (split_part({own_column}, '/', 1) IN ('{"','".join(foreign_tables)}')),\n"""
 
     @staticmethod
     def prefix_error(method_or_str: str, table_name: str, fname: str) -> str:
