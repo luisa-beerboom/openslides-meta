@@ -875,17 +875,15 @@ class Helper:
     def get_enum_types_definitions() -> str:
         result = "\n"
         for name, values in InternalHelper.ENUMS.items():
-            result+= Helper.get_enum_type_definition(name, values)
+            result += Helper.get_enum_type_definition(name, values)
         return result
-    
+
     @staticmethod
-    def get_enum_type_definition(name:str, enum_list:list[str]) -> str:
+    def get_enum_type_definition(name: str, enum_list: list[str]) -> str:
         return Helper.ENUM_DEFINITION_TEMPLATE.substitute(
             {
                 "name": name,
-                "values": ", ".join(
-                    [f"'{item}'" for item in enum_list]
-                ),
+                "values": ", ".join([f"'{item}'" for item in enum_list]),
             }
         )
 
@@ -1471,7 +1469,7 @@ DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION notify_transaction_e
         generic_plain_field_name: str,
         own_column: str,
         foreign_field: TableFieldType,
-        is_add:bool=False
+        is_add: bool = False,
     ) -> str:
         foreign_table = foreign_field.table
         foreign_card, error = InternalHelper.get_cardinality(foreign_field)
@@ -1493,7 +1491,10 @@ DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION notify_transaction_e
 
     @staticmethod
     def get_generic_field_constraint(
-        collection: str, own_column: str, foreign_tables: list[str], is_add:bool=False
+        collection: str,
+        own_column: str,
+        foreign_tables: list[str],
+        is_add: bool = False,
     ) -> str:
         constraint_name = HelperGetNames.get_generic_valid_constraint_name(
             collection, own_column
