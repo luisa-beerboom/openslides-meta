@@ -186,6 +186,24 @@ class AlterSchemaHelper:
         )
 
     @staticmethod
+    def get_add_table_constraint_statement(
+        constraint_type: str,
+        collection_or_table_name: str,
+        column_name: str,
+        value: bool | int | str,
+    ) -> str:
+        constraint_func = getattr(
+            Helper,
+            f"get_inline_{constraint_type.lower()}_constraint",
+        )
+        constraint_def = constraint_func(
+            collection_or_table_name, column_name, value
+        ).strip()
+        return AlterSchemaHelper.get_alter_table_statement(
+            collection_or_table_name, f"ADD {constraint_def}"
+        )
+
+    @staticmethod
     def get_change_column_type_statement(
         collection_or_table_name: str, column_name: str, new_type: str
     ) -> str:

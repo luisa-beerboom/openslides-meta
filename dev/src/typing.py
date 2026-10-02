@@ -2,6 +2,8 @@ import string
 from enum import Enum
 from typing import Literal, TypedDict
 
+TriggerSqlDict = dict[str, dict[str, dict[str, str]]]
+
 SchemaZoneKey = Literal[
     "table",
     "alter_table",
