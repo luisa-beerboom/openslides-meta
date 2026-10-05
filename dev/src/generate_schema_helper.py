@@ -761,7 +761,7 @@ class Helper:
         trigger_name = HelperGetNames.get_notify_trigger_name(table_name)
         own_table = HelperGetNames.get_table_name(table_name)
         escaped_table_name = "'" + table_name + "'"
-        code = f"-- notify trigger for {escaped_table_name}"
+        code = f"-- notify trigger for {escaped_table_name}\n"
         code += f"CREATE TRIGGER {trigger_name} AFTER INSERT OR UPDATE OR DELETE ON {own_table}\n"
         code += f"FOR EACH ROW EXECUTE FUNCTION log_modified_models({escaped_table_name});\n"
         code += f"CREATE CONSTRAINT TRIGGER notify_transaction_end AFTER INSERT OR UPDATE OR DELETE ON {own_table}\n"
