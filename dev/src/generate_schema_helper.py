@@ -786,7 +786,10 @@ class Helper:
         return f"\n        CONSTRAINT {constraint_name} {check}"
 
     @staticmethod
-    def get_inline_unique_constraint(table_name: str, fname: str) -> str:
+    def get_inline_unique_constraint(
+        table_name: str, fname: str, value: bool = True
+    ) -> str:
+        # unused parameter value to keep the signature aligned for generic method access
         return Helper.get_constraint_with_line_break(
             HelperGetNames.get_unique_constraint_name(table_name, [fname]),
             "UNIQUE",
