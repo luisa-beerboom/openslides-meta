@@ -173,6 +173,8 @@ class GenerateCodeBlocks:
                     for k, v in result.items():
                         schema_zone_texts[k] += v or ""  # type: ignore[literal-required]
                         if k.startswith("create_trigger_"):
+                            if collection_name in ["poll", "poll_ballot", "poll_ballot_user"]:
+                                pass
                             cls.trigger_sql[collection_name][fname][k] += v  # type: ignore[operator]
                     if error:
                         errors.append(
@@ -248,7 +250,10 @@ class GenerateCodeBlocks:
             # schema_zone_texts is filled per model field.
             # If any fields for this collection generated table code, create the main notify trigger on it.
             if schema_zone_texts["table"]:
-                create_trigger_notify_code += triggercode
+                trigger_code = cls.trigger_sql[collection_name]["_meta"]["create_trigger_notify"] = (
+                    Helper.get_notify_trigger(collection_name) + "\n"
+                )
+                create_trigger_notify_code += trigger_code
             # Special triggers (e.g. for relation fields) come after
             # TODO: needs to be filled in the get_*_relation_*_type functions
             if code := schema_zone_texts["create_trigger_notify"]:

@@ -761,7 +761,7 @@ class Helper:
         trigger_name = HelperGetNames.get_notify_trigger_name(table_name)
         own_table = HelperGetNames.get_table_name(table_name)
         escaped_table_name = "'" + table_name + "'"
-        code = f"-- notify trigger for {escaped_table_name}\n"
+        code = f"-- notify triggers for {own_table} fields\n"
         code += f"CREATE TRIGGER {trigger_name} AFTER INSERT OR UPDATE OR DELETE ON {own_table}\n"
         code += f"FOR EACH ROW EXECUTE FUNCTION log_modified_models({escaped_table_name});\n"
         code += f"CREATE CONSTRAINT TRIGGER notify_transaction_end AFTER INSERT OR UPDATE OR DELETE ON {own_table}\n"
@@ -911,7 +911,7 @@ class Helper:
             table_name, ref_column
         )
         own_table = HelperGetNames.get_table_name(table_name)
-        return f"""-- notify triggers for {foreign_table} fields
+        return f"""-- notify trigger for {own_table}.{ref_column}
 CREATE TRIGGER {trigger_name} AFTER INSERT OR UPDATE OF {ref_column} OR DELETE ON {own_table}
 FOR EACH ROW EXECUTE FUNCTION log_modified_related_models('{foreign_table}', '{ref_column}', '{updated_field}');\n"""
 
@@ -1219,7 +1219,7 @@ FOR EACH ROW EXECUTE FUNCTION log_modified_related_models('{foreign_table}', '{r
         trigger_name = HelperGetNames.get_notify_trigger_name(table_name)
 
         return f"""
--- notify triggers for {own_table_field.table} fields
+-- notify triggers for {own_table_field.table}.{own_table_field.column} and {foreign_table_field.table}.{foreign_table_field.column}
 CREATE TRIGGER {trigger_name} AFTER INSERT OR UPDATE OR DELETE ON {nm_table_name}
 FOR EACH ROW EXECUTE FUNCTION log_modified_related_models('{own_table_field.table}','{field1}','{own_table_field.column}','{foreign_table_field.table}','{field2}','{foreign_table_field.column}');
 CREATE CONSTRAINT TRIGGER notify_transaction_end AFTER INSERT OR UPDATE OR DELETE ON {nm_table_name}
@@ -1238,7 +1238,7 @@ DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION notify_transaction_e
         )
         own_table_name = HelperGetNames.get_table_name(table_name)
         return f"""
--- notify triggers for {table_name} fields
+-- notify trigger for {own_table_name}.{generic_plain_field_name}
 CREATE TRIGGER {trigger_name} AFTER INSERT OR UPDATE OF {generic_plain_field_name} OR DELETE ON {own_table_name}
 FOR EACH ROW EXECUTE FUNCTION log_modified_related_models('{foreign_table}','{generic_plain_field_name}','{updated_field}');
 """
@@ -1262,7 +1262,7 @@ FOR EACH ROW EXECUTE FUNCTION log_modified_related_models('{foreign_table}','{ge
                 f"{own_table_field.table}_{own_table_field.ref_column}"
             )
             trigger_text += f"""
--- notify triggers for {own_table_field.table} fields
+-- notify triggers for {own_table_field.table}.{own_table_field.column} fields
 CREATE TRIGGER {trigger_name} AFTER INSERT OR UPDATE OF {gm_content_field} OR DELETE ON {gm_table_name}
 FOR EACH ROW EXECUTE FUNCTION log_modified_related_models('{own_table_field.table}','{own_table_name_with_ref_column}','{own_table_field.column}','{foreign_table_field.table}','{gm_content_field}','{foreign_table_field.column}');
 """
