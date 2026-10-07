@@ -173,8 +173,6 @@ class GenerateCodeBlocks:
                     for k, v in result.items():
                         schema_zone_texts[k] += v or ""  # type: ignore[literal-required]
                         if k.startswith("create_trigger_"):
-                            if collection_name in ["poll", "poll_ballot", "poll_ballot_user"]:
-                                pass
                             cls.trigger_sql[collection_name][fname][k] += v  # type: ignore[operator]
                     if error:
                         errors.append(
