@@ -3,7 +3,7 @@ import string
 from collections import defaultdict
 from collections.abc import Callable
 from decimal import Decimal
-from enum import Enum
+from enum import StrEnum
 from pathlib import Path
 from string import Formatter
 from textwrap import dedent, indent
@@ -50,7 +50,7 @@ class SchemaZoneTexts(TypedDict, total=False):
     errors: list[str]
 
 
-class SQL_Delete_Update_Options(str, Enum):
+class SQL_Delete_Update_Options(StrEnum):
     RESTRICT = "RESTRICT"
     CASCADE = "CASCADE"
     SET_NULL = "SET NULL"

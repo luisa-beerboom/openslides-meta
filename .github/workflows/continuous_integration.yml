@@ -8,7 +8,7 @@ on:
       - "staging**"
 
 env:
-  PYTHON_VERSION: 3.10.x
+  PYTHON_VERSION: 3.12.x
 
 jobs:
   validate-models:
