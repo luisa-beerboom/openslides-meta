@@ -248,9 +248,9 @@ class GenerateCodeBlocks:
             # schema_zone_texts is filled per model field.
             # If any fields for this collection generated table code, create the main notify trigger on it.
             if schema_zone_texts["table"]:
-                trigger_code = cls.trigger_sql[collection_name]["_meta"]["create_trigger_notify"] = (
-                    Helper.get_notify_trigger(collection_name) + "\n"
-                )
+                trigger_code = cls.trigger_sql[collection_name]["_meta"][
+                    "create_trigger_notify"
+                ] = (Helper.get_notify_trigger(collection_name) + "\n")
                 create_trigger_notify_code += trigger_code
             # Special triggers (e.g. for relation fields) come after
             # TODO: needs to be filled in the get_*_relation_*_type functions
