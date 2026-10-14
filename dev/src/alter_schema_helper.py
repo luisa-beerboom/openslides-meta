@@ -5,6 +5,8 @@ from .helper_get_names import HelperGetNames
 
 
 class AlterSchemaHelper:
+    dropped_views: set[str] = set()
+
     @staticmethod
     def get_foreign_key_table_constraint_as_alter_table(
         table_name: str,
@@ -66,7 +68,7 @@ class AlterSchemaHelper:
 
     @staticmethod
     def get_alter_view_part(view_name: str) -> str:
-        return f"ALTER VIEW {view_name}"
+        return f'ALTER VIEW "{view_name}"'
 
     @staticmethod
     def get_alter_table_part(table_name: str) -> str:
@@ -76,10 +78,12 @@ class AlterSchemaHelper:
     def get_alter_type_part(type_name: str) -> str:
         return f"ALTER TYPE {type_name}"
 
-    @staticmethod
+    @classmethod
     def get_rename_view_column(
-        view_name: str, column_name_old: str, column_name_new: str
+        cls, view_name: str, column_name_old: str, column_name_new: str
     ) -> str:
+        if view_name in cls.dropped_views:
+            return ""
         avp = AlterSchemaHelper.get_alter_view_part(view_name)
         rcp = AlterSchemaHelper.get_rename_column_part(column_name_old, column_name_new)
         return f"{avp} {rcp};\n"
@@ -92,8 +96,10 @@ class AlterSchemaHelper:
         rcp = AlterSchemaHelper.get_rename_column_part(column_name_old, column_name_new)
         return f"{atp} {rcp};\n"
 
-    @staticmethod
-    def get_rename_view(view_name_old: str, view_name_new: str) -> str:
+    @classmethod
+    def get_rename_view(cls, view_name_old: str, view_name_new: str) -> str:
+        if view_name_old in cls.dropped_views:
+            return ""
         avp = AlterSchemaHelper.get_alter_view_part(view_name_old)
         rp = AlterSchemaHelper.get_rename_part("", view_name_new)
         return f"{avp} {rp};\n"
@@ -144,8 +150,13 @@ class AlterSchemaHelper:
             HelperGetNames.get_enum_name_for_column(collection_name, column_name)
         )
 
-    @staticmethod
-    def get_drop_table_statement(collection_or_table_name: str) -> str:
+    @classmethod
+    def get_drop_table_statement(
+        cls, collection_or_table_name: str, all_views_sql: dict[str, str]
+    ) -> str:
+        for view, view_code in all_views_sql.items():
+            if collection_or_table_name in view_code:
+                cls.dropped_views.add(view)
         return f"DROP TABLE {HelperGetNames.get_table_name(collection_or_table_name)} CASCADE;\n"
 
     @staticmethod
@@ -155,10 +166,19 @@ class AlterSchemaHelper:
         )
         return f"{alter_table_part} {action};\n"
 
-    @staticmethod
+    @classmethod
     def get_drop_column_statement(
-        collection_or_table_name: str, column_name: str
+        cls,
+        collection_or_table_name: str,
+        column_name: str,
+        all_views_sql: dict[str, str],
     ) -> str:
+        for view, view_code in all_views_sql.items():
+            if any(
+                collection_or_table_name in line and column_name in line
+                for line in view_code.split("\n")
+            ):
+                cls.dropped_views.add(view)
         return AlterSchemaHelper.get_alter_table_statement(
             collection_or_table_name, f"DROP COLUMN {column_name} CASCADE"
         )
@@ -225,9 +245,14 @@ class AlterSchemaHelper:
     ) -> str:
         return f"DROP TRIGGER {trigger_name} ON {HelperGetNames.get_table_name(collection_or_table_name)};\n"
 
-    @staticmethod
-    def get_drop_view_statement(collection_name: str) -> str:
-        return f'DROP VIEW IF EXISTS "{collection_name}";\n'
+    @classmethod
+    def get_drop_view_statement(cls, collection_name: str) -> str:
+        if collection_name not in cls.dropped_views:
+            cls.dropped_views.add(collection_name)
+            return f'DROP VIEW IF EXISTS "{collection_name}";\n'
+        else:
+            print(f"View {collection_name} was dropped before.")
+            return ""
 
     @staticmethod
     def generate_change_column_type_statements(
@@ -242,7 +267,7 @@ class AlterSchemaHelper:
     @staticmethod
     def get_add_value_to_enum(enum_name: str, value: str) -> str:
         atp = AlterSchemaHelper.get_alter_type_part(enum_name)
-        return f"{atp} ADD VALUE {value};\n"
+        return f"{atp} ADD VALUE '{value}';\n"
 
     @staticmethod
     def get_rename_value_in_enum(enum_name: str, value_old: str, value_new: str) -> str:
