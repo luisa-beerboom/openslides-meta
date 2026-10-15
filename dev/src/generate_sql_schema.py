@@ -248,9 +248,10 @@ class GenerateCodeBlocks:
             # schema_zone_texts is filled per model field.
             # If any fields for this collection generated table code, create the main notify trigger on it.
             if schema_zone_texts["table"]:
-                create_trigger_notify_code += (
-                    Helper.get_notify_trigger(collection_name) + "\n"
-                )
+                trigger_code = cls.trigger_sql[collection_name]["_meta"][
+                    "create_trigger_notify"
+                ] = (Helper.get_notify_trigger(collection_name) + "\n")
+                create_trigger_notify_code += trigger_code
             # Special triggers (e.g. for relation fields) come after
             # TODO: needs to be filled in the get_*_relation_*_type functions
             if code := schema_zone_texts["create_trigger_notify"]:
@@ -1063,7 +1064,12 @@ class GenerateCodeBlocks:
 
     @classmethod
     def get_generic_relation_type(
-        cls, table_name: str, fname: str, fdata: dict[str, Any], type_: str
+        cls,
+        table_name: str,
+        fname: str,
+        fdata: dict[str, Any],
+        type_: str,
+        is_add: bool = False,
     ) -> tuple[SchemaZoneTexts, str]:
         text = cast(SchemaZoneTexts, defaultdict(str))
         own_table_field = TableFieldType(table_name, fname, fdata)
@@ -1094,6 +1100,7 @@ class GenerateCodeBlocks:
                     generic_plain_field_name,
                     own_table_field.column,
                     foreign_table_field,
+                    is_add,
                 )
                 if equal_fields := cls.get_equal_fields(
                     own_table_field, foreign_table_field
@@ -1124,7 +1131,7 @@ class GenerateCodeBlocks:
                     foreign_table_field.ref_column,
                 )
             text["table"] += Helper.get_generic_field_constraint(
-                own_table_field.table, own_table_field.column, foreign_tables
+                own_table_field.table, own_table_field.column, foreign_tables, is_add
             )
         text["final_info"] = final_info
         return text, error

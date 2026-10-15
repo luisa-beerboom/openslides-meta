@@ -164,7 +164,8 @@ class AlterSchemaHelper:
         alter_table_part = AlterSchemaHelper.get_alter_table_part(
             HelperGetNames.get_table_name(collection_or_table_name)
         )
-        return f"{alter_table_part} {action};\n"
+        separator = "" if action.startswith("\n") else " "
+        return f"{alter_table_part}{separator}{action};\n"
 
     @classmethod
     def get_drop_column_statement(
@@ -288,3 +289,8 @@ class AlterSchemaHelper:
         return AlterSchemaHelper.get_alter_column_statement(
             table_name, field_name, f"SET DEFAULT {default}"
         )
+
+    @staticmethod
+    def get_add_column_statement(field_name: str, constraints_sql: str) -> str:
+        return f"""
+    ADD COLUMN {field_name}{constraints_sql},"""
