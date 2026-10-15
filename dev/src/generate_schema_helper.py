@@ -892,15 +892,6 @@ class Helper:
         return result
 
     @staticmethod
-    def get_enum_type_definition(name: str, enum_list: list[str]) -> str:
-        return Helper.ENUM_DEFINITION_TEMPLATE.substitute(
-            {
-                "name": name,
-                "values": ", ".join([f"'{item}'" for item in enum_list]),
-            }
-        )
-
-    @staticmethod
     def get_on_action_mode(action: str, delete: bool) -> str:
         if action:
             if (actionUpper := action.upper()) in SQL_Delete_Update_Options:
