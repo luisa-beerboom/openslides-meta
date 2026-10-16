@@ -47,7 +47,9 @@ jobs:
 
       - name: Check pyupgrade
         if: always()
-        run: make pyupgrade
+        run: |
+          make pyupgrade
+          test $(git status --porcelain | wc -l) = 0
 
       - name: Validate models.yml
         if: always()
