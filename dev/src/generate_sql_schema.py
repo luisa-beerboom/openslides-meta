@@ -52,9 +52,7 @@ class GenerateCodeBlocks:
         cls.trigger_sql = defaultdict(
             lambda: defaultdict(lambda: defaultdict(str))
         )
-        # Map of intermediate table name and sql definition of all intermediate tables
         cls.intermediate_sql = {}
-        # In comparison to intermediate_sql, reinitialized for every collection.
         cls.intermediate_tables = {}
 
     @classmethod
