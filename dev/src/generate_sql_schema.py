@@ -43,15 +43,13 @@ class GenerateCodeBlocks:
 
     if not InternalHelper.MODELS:
         InternalHelper.read_models_yml()
-    
+
     @classmethod
-    def reset_class_attributes(cls)->None:
+    def reset_class_attributes(cls) -> None:
         cls.table_sql = {}
         cls.view_sql = {}
         cls.alter_table_final_sql = {}
-        cls.trigger_sql = defaultdict(
-            lambda: defaultdict(lambda: defaultdict(str))
-        )
+        cls.trigger_sql = defaultdict(lambda: defaultdict(lambda: defaultdict(str)))
         cls.intermediate_sql = {}
         cls.intermediate_tables = {}
 
