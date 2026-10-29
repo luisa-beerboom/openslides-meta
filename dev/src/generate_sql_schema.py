@@ -43,6 +43,19 @@ class GenerateCodeBlocks:
 
     if not InternalHelper.MODELS:
         InternalHelper.read_models_yml()
+    
+    @classmethod
+    def reset_class_attributes(cls)->None:
+        cls.table_sql = {}
+        cls.view_sql = {}
+        cls.alter_table_final_sql = {}
+        cls.trigger_sql = defaultdict(
+            lambda: defaultdict(lambda: defaultdict(str))
+        )
+        # Map of intermediate table name and sql definition of all intermediate tables
+        cls.intermediate_sql = {}
+        # In comparison to intermediate_sql, reinitialized for every collection.
+        cls.intermediate_tables = {}
 
     @classmethod
     def generate_the_code(
@@ -114,6 +127,7 @@ class GenerateCodeBlocks:
             "unique",
             "constant",
         }
+        cls.reset_class_attributes()
         collection_meta_handled_attributes = {
             "unique_together",
         }
